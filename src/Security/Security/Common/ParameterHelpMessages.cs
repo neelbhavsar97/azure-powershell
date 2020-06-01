@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Commands.Security.Common
         public const string PassThru = "Return whether the operation was successful.";
         public const string Tags = "Tags.";
         public const string DisplayName = "Display name.";
-        public const string Status = "Status .";
+        public const string Status = "Status.";
         public const string Export = "Export data.";
         public const string DisabledDataSources = "Disabled data sources.";
         public const string IotHubs = "Iot hubs.";
@@ -80,6 +80,15 @@ namespace Microsoft.Azure.Commands.Security.Common
 
         #endregion
 
+        #region Settings
+
+        public const string SettingName = "Setting name.";
+        public const string Setting = "Setting.";
+        public const string SettingKind = "Setting kind.";
+        public const string Enabled = "Enables the setting.";
+
+        #endregion
+
         #region JIT Network Access Policies
 
         public const string VirutalMachines = "Virtual Machines.";
@@ -91,6 +100,14 @@ namespace Microsoft.Azure.Commands.Security.Common
         public const string Disable = "Disables Threat Protection Policy";
         public const string Enable = "Enables Threat Protection Policy";
 
+        #endregion
+
+
+        #region RegulatoryCompliance
+
+        public const string StandardName = "Standard Name.";
+        public const string ControlName = "Control Name.";
+      
         #endregion
 
         #region Device Security Groups

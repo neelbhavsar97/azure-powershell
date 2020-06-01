@@ -72,17 +72,20 @@ Gets the security tasks that Azure Security Center recommends you to do in order
 ### [Get-AzSecurityWorkspaceSetting](Get-AzSecurityWorkspaceSetting.md)
 Gets the configured security workspace settings on a subscription.
 
+### [Get-AzSqlInformationProtectionPolicy](Get-AzSqlInformationProtectionPolicy.md)
+Retrieves the effective tenant SQL information protection policy.
+
 ### [New-AzDeviceSecurityGroupAllowlistCustomAlertRuleObject](New-AzDeviceSecurityGroupAllowlistCustomAlertRuleObject.md)
-Create new allow list custom alert rule for device security group - IoT Security
+Create new allow list custom alert rule for device security group (IoT Security)
 
 ### [New-AzDeviceSecurityGroupDenylistCustomAlertRuleObject](New-AzDeviceSecurityGroupDenylistCustomAlertRuleObject.md)
-Create new deny list custom alert rule for device security group - IoT Security
+Create new deny list custom alert rule for device security group (IoT Security)
 
 ### [New-AzDeviceSecurityGroupThresholdCustomAlertRuleObject](New-AzDeviceSecurityGroupThresholdCustomAlertRuleObject.md)
-Create new threshold custom alert rule for device security group - IoT Security
+Create new threshold custom alert rule for device security group (IoT Security)
 
 ### [New-AzDeviceSecurityGroupTimeWindowRuleObject](New-AzDeviceSecurityGroupTimeWindowRuleObject.md)
-Create new time window rule for device security group - IoT Security
+Create new time window rule for device security group (IoT Security)
 
 ### [New-AzIotSecuritySolutionRecommendationConfigurationObject](New-AzIotSecuritySolutionRecommendationConfigurationObject.md)
 Create new recommendation configuration for iot security solution
@@ -140,3 +143,18 @@ Invokes a temporary network access request.
 
 ### [Update-AzIotSecuritySolution](Update-AzIotSecuritySolution.md)
 Update one or more of the following properties in IoT security solution: tags, recommendation configuration, user defined resources
+
+### [Get-AzRegulatoryComplainceAssessment](Get-AzRegulatoryComplainceAssessment.md)
+Gets regulatory compliance assessments
+
+### [Get-AzRegulatoryComplianceControl](Get-AzRegulatoryComplianceControl.md)
+Gets regulatory compliance controls
+
+### [Get-AzRegulatoryComplianceStandard](Get-AzRegulatoryComplianceStandard.md)
+Gets regulatoey compliance standards
+
+### [Get-AzSecuritySetting](Get-AzSecuritySetting.md)
+Gets security settings in Azure Security Center
+
+### [Set-AzSecuritySetting](Set-AzSecuritySetting.md)
+Sets a security setting in Azure Security Center
