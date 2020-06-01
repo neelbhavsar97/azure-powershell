@@ -25,7 +25,6 @@ using System.Management.Automation;
 using MNM = Microsoft.Azure.Management.Network.Models;
 using System.Linq;
 using System.IO;
-using Microsoft.Azure.Management.Network.Models;
 
 namespace Microsoft.Azure.Commands.Network
 {
@@ -72,13 +71,6 @@ namespace Microsoft.Azure.Commands.Network
         public string Name { get; set; }
 
         [Parameter(
-            Mandatory = true,
-            HelpMessage = "The customer name to whom this Express Route Port is assigned to.",
-            ValueFromPipelineByPropertyName = false)]
-        [ValidateNotNullOrEmpty]
-        public string CustomerName { get; set; }
-
-        [Parameter(
             Mandatory = false,
             HelpMessage = "The output filepath to store the Letter of Authorization to.",
             ValueFromPipelineByPropertyName = false)]
@@ -102,9 +94,8 @@ namespace Microsoft.Azure.Commands.Network
                 ResourceGroupName = resourceInfo.ResourceGroupName;
                 Name = resourceInfo.ResourceName;
             }
-            GenerateExpressRoutePortsLOARequest generateExpressRoutePortsLOARequest = new GenerateExpressRoutePortsLOARequest(CustomerName);
-            var response = this.NetworkClient.NetworkManagementClient.ExpressRoutePorts.GenerateLOA(this.ResourceGroupName, this.Name, generateExpressRoutePortsLOARequest);
-            var decodedDocument = Convert.FromBase64String(response.EncodedContent);
+            var encodedDocument = this.NetworkClient.NetworkManagementClient.ExpressRoutePorts.PrintLOA(this.ResourceGroupName, this.Name);
+            var decodedDocument = Convert.FromBase64String(encodedDocument);
             if (String.IsNullOrEmpty(Destination))
             {
                 Destination = DefaultFileName;
