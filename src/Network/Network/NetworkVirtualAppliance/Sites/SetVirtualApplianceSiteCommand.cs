@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Microsoft.Azure.Commands.Network.NetworkVirtualAppliance.Sites
+namespace Microsoft.Azure.Commands.Network
 {
     class SetVirtualApplianceSiteCommand
     {
