@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Microsoft.Azure.Commands.Network
 {
-    class NewVirtualApplianceSkuCommand
+    public class NewVirtualApplianceSkuCommand
     {
     }
 }
