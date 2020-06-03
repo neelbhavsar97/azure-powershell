@@ -8,7 +8,7 @@ namespace Microsoft.Azure.Commands.Network.Models
     public class PSVirtualApplianceSite : PSTopLevelResource
     {
         public string AddressPrefix { get; set; }
-        public Office365PolicyProperties O365Policy { get; set; }
+        public PSOffice365PolicyProperties O365Policy { get; set; }
         public string ProvisioningState { get; }
     }
 }
