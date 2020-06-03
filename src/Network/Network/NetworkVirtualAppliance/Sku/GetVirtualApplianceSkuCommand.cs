@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Management.Network;
+﻿using Microsoft.Azure.Commands.Network.Models;
+using Microsoft.Azure.Management.Network;
 using Microsoft.Azure.Management.Network.Models;
 using Microsoft.Rest.Azure;
 using System;
@@ -8,6 +9,7 @@ using System.Text;
 
 namespace Microsoft.Azure.Commands.Network
 {
+    [Cmdlet("Get", ResourceManager.Common.AzureRMConstants.AzureRMPrefix + "NetworkVirtualApplianceSku"), OutputType(typeof(PSNetworkSecurityGroup))]
     public class GetVirtualApplianceSkuCommand : VirtualApplianceSkuBaseCmdlet
     {
         [Parameter(
@@ -22,23 +24,23 @@ namespace Microsoft.Azure.Commands.Network
             base.Execute();
             if (!(String.IsNullOrEmpty(Name)))
             {
+                // Get one NVA Sku.
                 var sku = this.GetVirtualApplianceSku(this.Name);
                 WriteObject(sku);
             }
             else
             {
+                // List all NVA Skus.
                 IPage<NetworkVirtualApplianceSku> skuPage;
                 skuPage = this.VirtualApplianceSkusClient.List();
                 // Get all resources by polling on next page link
                 var skuList = ListNextLink<NetworkVirtualApplianceSku>.GetAllResourcesByPollingNextLink(skuPage, this.VirtualApplianceSkusClient.ListNext);
-                var psNsgs = new List<PSNetworkSecurityGroup>();
-                foreach (var networkSecurityGroup in nsgList)
+                var psNsgs = new List<PSNetworkVirtualApplianceSku>();
+                foreach (var sku in skuList)
                 {
-                    var psNsg = this.ToPsNetworkSecurityGroup(networkSecurityGroup);
-                    psNsg.ResourceGroupName = NetworkBaseCmdlet.GetResourceGroup(networkSecurityGroup.Id);
+                    var psNsg = this.ToPsNetworkVirtualApplianceSku(sku);
                     psNsgs.Add(psNsg);
                 }
-
                 WriteObject(psNsgs, true);
             }
         }

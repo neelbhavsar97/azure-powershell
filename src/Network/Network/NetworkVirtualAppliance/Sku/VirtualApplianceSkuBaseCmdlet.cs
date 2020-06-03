@@ -36,11 +36,19 @@ namespace Microsoft.Azure.Commands.Network
             return true;
         }
 
-        public PSVirtualApplianceSkuProperties GetVirtualApplianceSku(string name)
+        public PSNetworkVirtualApplianceSku GetVirtualApplianceSku(string name)
         {
             var nvasku = this.VirtualApplianceSkusClient.Get(name);
-            var psSku = NetworkResourceManagerProfile.Mapper.Map<PSVirtualApplianceSkuProperties>(nvasku);
+            var psSku = NetworkResourceManagerProfile.Mapper.Map<PSNetworkVirtualApplianceSku>(nvasku);
             return psSku;
         }
+
+        public PSNetworkVirtualApplianceSku ToPsNetworkVirtualApplianceSku(NetworkVirtualApplianceSku nvasku)
+        {
+            var psSku = NetworkResourceManagerProfile.Mapper.Map<PSNetworkVirtualApplianceSku>(nvasku);
+            psSku.Tag = TagsConversionHelper.CreateTagHashtable(nvasku.Tags);
+            return psSku;
+        }
+
     }
 }
