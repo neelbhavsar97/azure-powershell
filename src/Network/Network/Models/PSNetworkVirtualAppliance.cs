@@ -40,6 +40,6 @@ namespace Microsoft.Azure.Commands.Network.Models
         
         public ManagedServiceIdentity Identity { get; set; }
         
-        public VirtualApplianceSkuProperties Sku { get; set; }
+        public PSVirtualApplianceSkuProperties Sku { get; set; }
     }
 }
