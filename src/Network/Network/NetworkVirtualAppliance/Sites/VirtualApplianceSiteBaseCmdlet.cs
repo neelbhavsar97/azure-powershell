@@ -19,11 +19,11 @@ namespace Microsoft.Azure.Commands.Network
             }
         }
 
-        public bool IsVirtualApplianceSitePresent(string resourceGroupName, string name)
+        public bool IsVirtualApplianceSitePresent(string resourceGroupName, string nvaName, string name)
         {
             try
             {
-                GetVirtualApplianceSite(resourceGroupName, name);
+                GetVirtualApplianceSite(resourceGroupName, nvaName, name);
             }
             catch (Microsoft.Rest.Azure.CloudException exception)
             {
@@ -39,13 +39,13 @@ namespace Microsoft.Azure.Commands.Network
             return true;
         }
 
-        public PSVirtualApplianceSite GetVirtualApplianceSite(string resourceGroupName, string name, string expandResource = null)
+        public PSVirtualApplianceSite GetVirtualApplianceSite(string resourceGroupName, string nvaName, string name)
         {
-            var nvasite = this.VirtualApplianceSitesClient.Get(resourceGroupName, name, expandResource);
+            var nvasite = this.VirtualApplianceSitesClient.Get(resourceGroupName, nvaName, name);
 
-            var psNetworkInterface = NetworkResourceManagerProfile.Mapper.Map<PSVirtualApplianceSite>(nvasite);
-            psNetworkInterface.ResourceGroupName = resourceGroupName;
-            return psNetworkInterface;
+            var psSite = NetworkResourceManagerProfile.Mapper.Map<PSVirtualApplianceSite>(nvasite);
+            psSite.ResourceGroupName = resourceGroupName;
+            return psSite;
         }
         public PSVirtualApplianceSite ToPsVirtualApplianceSite(VirtualApplianceSite nvasite)
         {

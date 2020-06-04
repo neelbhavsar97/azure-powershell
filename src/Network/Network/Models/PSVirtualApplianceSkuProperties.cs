@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Microsoft.Azure.Commands.Network.Models
 {
-    public class PSVirtualApplianceSkuProperties : PSTopLevelResource
+    public class PSVirtualApplianceSkuProperties
     {
-        public string Vendor { get; set; }
+        public string VendorName { get; set; }
         public string BundledScaleUnit { get; set; }
         public string MarketPlaceVersion { get; set; }
     }
