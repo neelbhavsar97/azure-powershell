@@ -4,8 +4,7 @@ using System.Text;
 
 namespace Microsoft.Azure.Commands.Network
 {
-    public class NewAzureNetworkVirtualApplianceCommand
+    class UpdateVirtualApplianceSiteCommand
     {
-
     }
 }

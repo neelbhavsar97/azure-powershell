@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         
         public IList<string> BootStrapConfigurationBlobs { get; set; }
         
-        public SubResource VirtualHub { get; set; }
+        public PSResourceId VirtualHub { get; set; }
         
         public IList<string> CloudInitConfigurationBlobs { get; set; }
         
@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         
         public IList<PSVirtualApplianceNicProperties> VirtualApplianceNics { get; }
         
-        public IList<SubResource> VirtualApplianceSites { get; }
+        public IList<PSResourceId> VirtualApplianceSites { get; }
         
         public string ProvisioningState { get; }
         
