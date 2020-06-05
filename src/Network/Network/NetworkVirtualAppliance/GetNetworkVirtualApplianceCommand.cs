@@ -16,6 +16,8 @@ namespace Microsoft.Azure.Commands.Network
     {
         private const string ResourceNameParameterSet = "ResourceNameParameterSet";
         private const string ResourceIdParameterSet = "ResourceIdParameterSet";
+        private const string ResourceNVAParameterSet = "ResourceNVAParameterSet";
+
 
         [Alias("ResourceName")]
         [Parameter(
@@ -23,6 +25,11 @@ namespace Microsoft.Azure.Commands.Network
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "The resource name.",
             ParameterSetName = ResourceNameParameterSet)]
+        [Parameter(
+            Mandatory = true,
+            ValueFromPipelineByPropertyName = true,
+            HelpMessage = "The resource name.",
+            ParameterSetName = ResourceNVAParameterSet)]
         public virtual string Name { get; set; }
 
         [Parameter(
@@ -30,7 +37,13 @@ namespace Microsoft.Azure.Commands.Network
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "The resource group name.",
             ParameterSetName = ResourceNameParameterSet)]
+        [Parameter(
+            Mandatory = true,
+            ValueFromPipelineByPropertyName = true,
+            HelpMessage = "The resource name.",
+            ParameterSetName = ResourceNVAParameterSet)]
         [ResourceGroupCompleter]
+        [ValidateNotNullOrEmpty]
         public virtual string ResourceGroupName { get; set; }
 
         [Parameter(
