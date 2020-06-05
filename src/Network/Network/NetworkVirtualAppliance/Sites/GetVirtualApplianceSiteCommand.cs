@@ -2,7 +2,6 @@
 using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
 using Microsoft.Azure.Management.Network;
 using Microsoft.Azure.Management.Network.Models;
-using Microsoft.Azure.Management.WebSites.Version2016_09_01.Models;
 using Microsoft.Rest.Azure;
 using System;
 using System.Collections.Generic;
