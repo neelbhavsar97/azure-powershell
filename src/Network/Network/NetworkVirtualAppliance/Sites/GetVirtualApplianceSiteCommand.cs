@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Commands.Network
         [Parameter(
             Mandatory = false,
             ValueFromPipelineByPropertyName = true,
-            HelpMessage = "The Network Virtual Appliance associate with the site.",
+            HelpMessage = "The Network Virtual Appliance that the site is attached.",
             ParameterSetName = ResourceNameParameterSet)]
         public virtual string NetworkVirtualApplianceId { get; set; }
 
@@ -86,7 +86,6 @@ namespace Microsoft.Azure.Commands.Network
                     foreach (var site in siteList)
                     {
                         var psSite = this.ToPsVirtualApplianceSite(site);
-                        psSite.ResourceGroupName = NetworkBaseCmdlet.GetResourceGroup(site.Id);
                         psSites.Add(psSite);
                     }
 

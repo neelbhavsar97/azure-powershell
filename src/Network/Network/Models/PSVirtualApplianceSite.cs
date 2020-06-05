@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Microsoft.Azure.Commands.Network.Models
 {
-    public class PSVirtualApplianceSite : PSTopLevelResource
+    public class PSVirtualApplianceSite : PSChildResource
     {
         public string AddressPrefix { get; set; }
         public PSOffice365PolicyProperties O365Policy { get; set; }

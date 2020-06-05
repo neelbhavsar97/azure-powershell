@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Commands.Network.Models
         
         public string ProvisioningState { get; }
         
-        public ManagedServiceIdentity Identity { get; set; }
+        public PSManagedServiceIdentity Identity { get; set; }
         
         public PSVirtualApplianceSkuProperties Sku { get; set; }
     }

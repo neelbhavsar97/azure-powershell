@@ -6,7 +6,7 @@ namespace Microsoft.Azure.Commands.Network.Models
 {
     public class PSVirtualApplianceSkuProperties
     {
-        public string VendorName { get; set; }
+        public string Vendor { get; set; }
         public string BundledScaleUnit { get; set; }
         public string MarketPlaceVersion { get; set; }
     }

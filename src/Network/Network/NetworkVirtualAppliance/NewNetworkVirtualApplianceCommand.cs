@@ -6,17 +6,23 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Management.Automation;
+using System.Management.Automation.Remoting;
 using System.Text;
 using MNM = Microsoft.Azure.Management.Network.Models;
 
 namespace Microsoft.Azure.Commands.Network
 {
+    [Cmdlet("New", ResourceManager.Common.AzureRMConstants.AzureRMPrefix + "NetworkVirtualAppliance", SupportsShouldProcess = true), OutputType(typeof(PSNetworkVirtualAppliance))]
     public class NewNetworkVirtualApplianceCommand : NetworkVirtualApplianceBaseCmdlet
     {
+        private const string ResourceNameParameterSet = "ResourceNameParameterSet";
+        private const string ResourceIdParameterSet = "ResourceIdParameterSet";
+
         [Alias("ResourceName")]
         [Parameter(
             Mandatory = true,
             ValueFromPipelineByPropertyName = true,
+            ParameterSetName = ResourceNameParameterSet,
             HelpMessage = "The resource name.")]
         [ValidateNotNullOrEmpty]
         public virtual string Name { get; set; }
@@ -24,10 +30,20 @@ namespace Microsoft.Azure.Commands.Network
         [Parameter(
             Mandatory = true,
             ValueFromPipelineByPropertyName = true,
+            ParameterSetName = ResourceNameParameterSet,
             HelpMessage = "The resource group name.")]
         [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public virtual string ResourceGroupName { get; set; }
+
+        [Parameter(
+            Mandatory = true,
+            ValueFromPipelineByPropertyName = true,
+            ParameterSetName = ResourceIdParameterSet,
+            HelpMessage = "The resource group name.")]
+        [ResourceGroupCompleter]
+        [ValidateNotNullOrEmpty]
+        public virtual string ResourceId { get; set; }
 
         [Parameter(
             Mandatory = true,
@@ -59,6 +75,34 @@ namespace Microsoft.Azure.Commands.Network
         [Parameter(
             Mandatory = false,
             ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Managed identity.")]
+        [ValidateNotNullOrEmpty]
+        public PSManagedServiceIdentity Identity { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Bootstrap configuration blob storage URL.")]
+        [ValidateNotNullOrEmpty]
+        public string[] BootStrapConfigurationBlob { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Cloudinit configuration blob storage URL.")]
+        [ValidateNotNullOrEmpty]
+        public string[] CloudInitConfigurationBlob { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Cloudinit configuration in plain text.")]
+        [ValidateNotNullOrEmpty]
+        public string CloudInitConfiguration { get; set; }
+
+        [Parameter(
+            Mandatory = false,
+            ValueFromPipelineByPropertyName = true,
             HelpMessage = "A hashtable which represents resource tags.")]
         public Hashtable Tag { get; set; }
 
@@ -74,6 +118,12 @@ namespace Microsoft.Azure.Commands.Network
         public override void Execute()
         {
             base.Execute();
+            if (ParameterSetName.Equals(ResourceIdParameterSet))
+            {
+                this.ResourceGroupName = GetResourceGroup(this.ResourceId);
+                this.Name = GetResourceName(this.ResourceId, "Microsoft.Network/networkVirtualAppliances");
+            }
+            Console.WriteLine(this.ResourceGroupName + " " + this.Name);
             var present = this.IsNetworkVirtualAppliancePresent(this.ResourceGroupName, this.Name);
             ConfirmAction(
                 Force.IsPresent,
@@ -82,13 +132,13 @@ namespace Microsoft.Azure.Commands.Network
                 Name,
                 () =>
                 {
-                    var networkInterface = CreateNetworkVirtualAppliance();
+                    var nva = CreateNetworkVirtualAppliance();
                     if (present)
                     {
-                        networkInterface = this.GetNetworkVirtualAppliance(this.ResourceGroupName, this.Name);
+                        nva = this.GetNetworkVirtualAppliance(this.ResourceGroupName, this.Name);
                     }
 
-                    WriteObject(networkInterface);
+                    WriteObject(nva);
                 },
                 () => present);
         }
@@ -102,11 +152,17 @@ namespace Microsoft.Azure.Commands.Network
             networkVirtualAppliance.VirtualHub.Id = this.VirtualHubId;
             networkVirtualAppliance.VirtualApplianceAsn = this.VirtualApplianceAsn;
             networkVirtualAppliance.Sku = this.Sku;
+            networkVirtualAppliance.Identity = this.Identity;
+            networkVirtualAppliance.BootStrapConfigurationBlobs = this.BootStrapConfigurationBlob;
+            networkVirtualAppliance.CloudInitConfigurationBlobs = this.CloudInitConfigurationBlob;
+            networkVirtualAppliance.CloudInitConfiguration = this.CloudInitConfiguration;
 
             var networkVirtualApplianceModel = NetworkResourceManagerProfile.Mapper.Map<MNM.NetworkVirtualAppliance>(networkVirtualAppliance);
-            networkVirtualApplianceModel.Tags = TagsConversionHelper.CreateTagDictionary(this.Tag, validate: true);
-            this.NetworkVirtualAppliancesClient.CreateOrUpdate(this.ResourceGroupName, this.Name, networkVirtualApplianceModel);
 
+            networkVirtualApplianceModel.Tags = TagsConversionHelper.CreateTagDictionary(this.Tag, validate: true);
+            
+            this.NetworkVirtualAppliancesClient.CreateOrUpdate(this.ResourceGroupName, this.Name, networkVirtualApplianceModel);
+            
             var getNetworkVirtualAppliance = this.GetNetworkVirtualAppliance(this.ResourceGroupName, this.Name);
             return getNetworkVirtualAppliance;
         }
