@@ -44,7 +44,6 @@ namespace Microsoft.Azure.Commands.Network
             var nvasite = this.VirtualApplianceSitesClient.Get(resourceGroupName, nvaName, name);
 
             var psSite = NetworkResourceManagerProfile.Mapper.Map<PSVirtualApplianceSite>(nvasite);
-            psSite.ResourceGroupName = resourceGroupName;
             return psSite;
         }
         public PSVirtualApplianceSite ToPsVirtualApplianceSite(VirtualApplianceSite nvasite)

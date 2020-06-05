@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Commands.Network
             var skuProperties = new PSVirtualApplianceSkuProperties();
             skuProperties.BundledScaleUnit = this.BundledScaleUnit;
             skuProperties.MarketPlaceVersion = this.MarketPlaceVersion;
-            skuProperties.VendorName = this.VendorName;
+            skuProperties.Vendor = this.VendorName;
             WriteObject(skuProperties);
         }
     }

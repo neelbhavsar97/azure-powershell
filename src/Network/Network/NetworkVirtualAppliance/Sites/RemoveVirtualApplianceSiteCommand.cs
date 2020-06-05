@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
+﻿using Microsoft.Azure.Commands.Network.Models;
+using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
 using Microsoft.Azure.Management.Network;
 using System;
 using System.Collections.Generic;
@@ -7,12 +8,19 @@ using System.Text;
 
 namespace Microsoft.Azure.Commands.Network
 {
+    [Cmdlet("Remove", ResourceManager.Common.AzureRMConstants.AzureRMPrefix + "VirtualApplianceSite", SupportsShouldProcess = true), OutputType(typeof(bool))]
     public class RemoveVirtualApplianceSiteCommand : VirtualApplianceSiteBaseCmdlet
     {
+        private const string ResourceNameParameterSet = "ResourceNameParameterSet";
+        private const string ResourceIdParameterSet = "ResourceIdParameterSet";
+        private const string ResourceObjectParameterSet = "ResourceObjectParameterSet";
+
+        private string NvaName;
         [Alias("ResourceName")]
         [Parameter(
             Mandatory = true,
             ValueFromPipelineByPropertyName = true,
+            ParameterSetName = ResourceNameParameterSet,
             HelpMessage = "The resource name.")]
         [ResourceNameCompleter("Microsoft.Network/virtualApplianceSite", "ResourceGroupName")]
         [ValidateNotNullOrEmpty]
@@ -21,6 +29,7 @@ namespace Microsoft.Azure.Commands.Network
         [Parameter(
             Mandatory = true,
             ValueFromPipelineByPropertyName = true,
+            ParameterSetName = ResourceNameParameterSet,
             HelpMessage = "The resource ID of the Network Virtual Appliance associated with this site.")]
         [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
@@ -29,10 +38,29 @@ namespace Microsoft.Azure.Commands.Network
         [Parameter(
             Mandatory = true,
             ValueFromPipelineByPropertyName = true,
+            ParameterSetName = ResourceNameParameterSet,
             HelpMessage = "The resource group name.")]
         [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public virtual string ResourceGroupName { get; set; }
+
+        [Parameter(
+            Mandatory = true,
+            ValueFromPipelineByPropertyName = true,
+            ParameterSetName = ResourceIdParameterSet,
+            HelpMessage = "The resource id.")]
+        [ResourceGroupCompleter]
+        [ValidateNotNullOrEmpty]
+        public virtual string ResourceId { get; set; }
+
+        [Parameter(
+            Mandatory = true,
+            ValueFromPipelineByPropertyName = true,
+            ParameterSetName = ResourceObjectParameterSet,
+            HelpMessage = "The virtual appliance site object.")]
+        [ResourceGroupCompleter]
+        [ValidateNotNullOrEmpty]
+        public virtual PSVirtualApplianceSite VirtualApplianceSite { get; set; }
 
         [Parameter(
            Mandatory = false,
@@ -47,7 +75,33 @@ namespace Microsoft.Azure.Commands.Network
 
         public override void Execute()
         {
-            string nvaName = GetResourceName(NetworkVirtualApplianceId, "Microsoft.Network/networkVirtualAppliances");
+            if (ParameterSetName.Equals(ResourceIdParameterSet))
+            {
+                this.ResourceGroupName = GetResourceGroup(this.ResourceId);
+                this.NvaName = GetResourceName(this.ResourceId, "Microsoft.Network/networkVirtualAppliances", "virtualApplianceSites");
+                this.Name = GetResourceName(this.ResourceId, "virtualAppliancesites");
+                string nvaRg = GetResourceGroup(NetworkVirtualApplianceId);
+                if (!nvaRg.Equals(this.ResourceGroupName))
+                {
+                    throw new Exception("The resource group for Network Virtual Appliance is not same as that of site.");
+                }
+            }
+            else if (ParameterSetName.Equals(ResourceObjectParameterSet))
+            {
+                this.ResourceGroupName = GetResourceGroup(VirtualApplianceSite.Id);
+                this.Name = VirtualApplianceSite.Name;
+                this.NvaName = GetResourceName(VirtualApplianceSite.Id, "Microsoft.Network/networkVirtualAppliances", "virtualApplianceSites");
+            }
+            else
+            {
+                string nvaName = GetResourceName(NetworkVirtualApplianceId, "Microsoft.Network/networkVirtualAppliances");
+                string nvaRg = GetResourceGroup(NetworkVirtualApplianceId);
+                if (!nvaRg.Equals(this.ResourceGroupName))
+                {
+                    throw new Exception("The resource group for Network Virtual Appliance is not same as that of site.");
+                }
+            }
+            
             base.Execute();
             ConfirmAction(
                 Force.IsPresent,
@@ -56,7 +110,7 @@ namespace Microsoft.Azure.Commands.Network
                 Name,
                 () =>
                 {
-                    this.VirtualApplianceSitesClient.Delete(this.ResourceGroupName, nvaName, this.Name);
+                    this.VirtualApplianceSitesClient.Delete(this.ResourceGroupName, NvaName, this.Name);
                     if (PassThru)
                     {
                         WriteObject(true);
