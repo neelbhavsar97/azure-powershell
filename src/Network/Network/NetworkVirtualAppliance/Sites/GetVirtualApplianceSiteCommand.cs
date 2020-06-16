@@ -62,10 +62,8 @@ namespace Microsoft.Azure.Commands.Network
             {
                 this.NvaName = GetResourceName(this.NetworkVirtualApplianceId, "Microsoft.Network/networkVirtualAppliances");
             }
-            //Console.WriteLine(this.Name + " " + this.NvaName + " " + this.ResourceGroupName);
             if (ShouldGetByName(ResourceGroupName, NvaName, Name))
             {
-                //Console.WriteLine("Get one.");
                 var site = this.GetVirtualApplianceSite(this.ResourceGroupName, this.NvaName, this.Name);
                 WriteObject(site);
             }
@@ -75,7 +73,6 @@ namespace Microsoft.Azure.Commands.Network
                 IPage<VirtualApplianceSite> sitePage;
                 if(ShouldListByNva(ResourceGroupName, NvaName, Name))
                 {
-                    Console.WriteLine("Get by nva");
                     sitePage = this.VirtualApplianceSitesClient.List(ResourceGroupName, NvaName);
                     // Get all resources by polling on next page link
                     var siteList = ListNextLink<VirtualApplianceSite>.GetAllResourcesByPollingNextLink(sitePage, this.VirtualApplianceSitesClient.ListNext);
@@ -91,7 +88,6 @@ namespace Microsoft.Azure.Commands.Network
                 }
                 if (ShouldListByResourceGroup(this.ResourceGroupName, this.NvaName))
                 {
-                    Console.WriteLine("Get by rg");
                     // We do not support wildcards in NvaName, in this case the NvaName must be null or empty.
                     var nvaClient = this.NetworkClient.NetworkManagementClient.NetworkVirtualAppliances;
                     var nvaPage = nvaClient.ListByResourceGroup(this.ResourceGroupName);
@@ -112,8 +108,6 @@ namespace Microsoft.Azure.Commands.Network
                 }
                 else if(ShouldListBySubscription(this.ResourceGroupName, this.NvaName))
                 {
-                    Console.WriteLine("Get by sub");
-
                     var nvaClient = this.NetworkClient.NetworkManagementClient.NetworkVirtualAppliances;
                     var nvaPage = nvaClient.List();
                     var nvas = ListNextLink<NetworkVirtualAppliance>.GetAllResourcesByPollingNextLink(nvaPage, nvaClient.ListNext);

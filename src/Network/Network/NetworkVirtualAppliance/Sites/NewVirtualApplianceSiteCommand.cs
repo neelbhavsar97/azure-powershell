@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Commands.Network
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "The address prefix for the site.")]
         [ValidateNotNullOrEmpty]
-        public string AddresssPrefix { get; set; }
+        public string AddressPrefix { get; set; }
 
         [Parameter(
             Mandatory = true,
@@ -85,22 +85,16 @@ namespace Microsoft.Azure.Commands.Network
                 this.ResourceGroupName = GetResourceGroup(this.ResourceId);
                 this.NvaName = GetResourceName(this.ResourceId, "Microsoft.Network/networkVirtualAppliances", "virtualApplianceSites");
                 this.Name = GetResourceName(this.ResourceId, "virtualAppliancesites");
-                string nvaRg = GetResourceGroup(NetworkVirtualApplianceId);
-                if (!nvaRg.Equals(this.ResourceGroupName))
-                {
-                    throw new Exception("The resource group for Network Virtual Appliance is not same as that of site.");
-                }
             }
             else
             {
-                string nvaName = GetResourceName(NetworkVirtualApplianceId, "Microsoft.Network/networkVirtualAppliances");
+                this.NvaName = GetResourceName(NetworkVirtualApplianceId, "Microsoft.Network/networkVirtualAppliances");
                 string nvaRg = GetResourceGroup(NetworkVirtualApplianceId);
                 if (!nvaRg.Equals(this.ResourceGroupName))
                 {
                     throw new Exception("The resource group for Network Virtual Appliance is not same as that of site.");
                 }
             }
-            //Console.WriteLine(this.ResourceGroupName + " " + this.Name);
             var present = this.IsVirtualApplianceSitePresent(this.ResourceGroupName, this.NvaName, this.Name);
             ConfirmAction(
                 Force.IsPresent,
@@ -125,7 +119,7 @@ namespace Microsoft.Azure.Commands.Network
             var psSite = new PSVirtualApplianceSite();
             psSite.Name = this.Name;
             psSite.O365Policy = this.O365Policy;
-            psSite.AddressPrefix = this.AddresssPrefix;
+            psSite.AddressPrefix = this.AddressPrefix;
             
             var siteModel = NetworkResourceManagerProfile.Mapper.Map<MNM.VirtualApplianceSite>(psSite);
 

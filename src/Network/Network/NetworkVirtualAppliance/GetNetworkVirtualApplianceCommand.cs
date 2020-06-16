@@ -51,7 +51,6 @@ namespace Microsoft.Azure.Commands.Network
             
             if (ShouldGetByName(ResourceGroupName, Name))
             {
-                //Console.WriteLine("Get one.");
                 var nva = this.GetNetworkVirtualAppliance(this.ResourceGroupName, this.Name);
                 WriteObject(nva);
             }
@@ -60,12 +59,10 @@ namespace Microsoft.Azure.Commands.Network
                 IPage<NetworkVirtualAppliance> nvaPage;
                 if (ShouldListByResourceGroup(ResourceGroupName, Name))
                 {
-                    //Console.WriteLine("Listing by rg.");
                     nvaPage = this.NetworkVirtualAppliancesClient.ListByResourceGroup(ResourceGroupName);
                 }
                 else
                 {
-                    //Console.WriteLine("Listing by sub.");
                     nvaPage = this.NetworkVirtualAppliancesClient.List();
                 }
 

@@ -77,11 +77,6 @@ namespace Microsoft.Azure.Commands.Network
                 this.ResourceGroupName = GetResourceGroup(this.ResourceId);
                 this.NvaName = GetResourceName(this.ResourceId, "Microsoft.Network/networkVirtualAppliances", "virtualApplianceSites");
                 this.Name = GetResourceName(this.ResourceId, "virtualAppliancesites");
-                string nvaRg = GetResourceGroup(NetworkVirtualApplianceId);
-                if (!nvaRg.Equals(this.ResourceGroupName))
-                {
-                    throw new Exception("The resource group for Network Virtual Appliance is not same as that of site.");
-                }
             }
             else if (ParameterSetName.Equals(ResourceObjectParameterSet))
             {
@@ -91,7 +86,7 @@ namespace Microsoft.Azure.Commands.Network
             }
             else
             {
-                string nvaName = GetResourceName(NetworkVirtualApplianceId, "Microsoft.Network/networkVirtualAppliances");
+                this.NvaName = GetResourceName(NetworkVirtualApplianceId, "Microsoft.Network/networkVirtualAppliances");
                 string nvaRg = GetResourceGroup(NetworkVirtualApplianceId);
                 if (!nvaRg.Equals(this.ResourceGroupName))
                 {

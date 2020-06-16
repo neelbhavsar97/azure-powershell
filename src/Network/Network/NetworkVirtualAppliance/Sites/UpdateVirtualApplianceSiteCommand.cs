@@ -9,7 +9,7 @@ using System.Text;
 using MNM = Microsoft.Azure.Management.Network.Models;
 namespace Microsoft.Azure.Commands.Network
 {
-    [Cmdlet("Update", ResourceManager.Common.AzureRMConstants.AzureRMPrefix + "VirtualApplianceSite"), OutputType(typeof(PSVirtualApplianceSite))]
+    [Cmdlet("Update", ResourceManager.Common.AzureRMConstants.AzureRMPrefix + "VirtualApplianceSite", SupportsShouldProcess = true), OutputType(typeof(PSVirtualApplianceSite))]
     public class UpdateVirtualApplianceSiteCommand : VirtualApplianceSiteBaseCmdlet
     {
         private const string ResourceNameParameterSet = "ResourceNameParameterSet";
@@ -80,7 +80,7 @@ namespace Microsoft.Azure.Commands.Network
                 throw new Exception("The resource group for Network Virtual Appliance is not same as that of site.");
             }
             Console.WriteLine(this.ResourceGroupName + " " + this.Name);
-            if(!this.IsVirtualApplianceSitePresent(this.ResourceGroupName, this.NvaName, this.Name))
+            if(!(this.IsVirtualApplianceSitePresent(this.ResourceGroupName, this.NvaName, this.Name)))
             {
                 throw new ArgumentException(Properties.Resources.ResourceNotFound);
             }

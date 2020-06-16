@@ -25,15 +25,11 @@ namespace Microsoft.Azure.Commands.Network
             base.Execute();
             if (!(String.IsNullOrEmpty(SkuName)))
             {
-                // Get one NVA Sku.
-                // Console.WriteLine("Get one.");
                 var sku = this.GetVirtualApplianceSku(this.SkuName);
                 WriteObject(sku);
             }
             else
             {
-                //Console.WriteLine("Get all");
-                // List all NVA Skus.
                 IPage<NetworkVirtualApplianceSku> skuPage;
                 skuPage = this.VirtualApplianceSkusClient.List();
                 // Get all resources by polling on next page link

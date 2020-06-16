@@ -41,7 +41,6 @@ namespace Microsoft.Azure.Commands.Network
             ValueFromPipelineByPropertyName = true,
             ParameterSetName = ResourceIdParameterSet,
             HelpMessage = "The resource Id.")]
-        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public virtual string ResourceId { get; set; }
 
@@ -60,7 +59,7 @@ namespace Microsoft.Azure.Commands.Network
         public string VirtualHubId { get; set; }
 
         [Parameter(
-            Mandatory = false, // Make it true.
+            Mandatory = true,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "The Sku of the Virtual Appliance.")]
         public PSVirtualApplianceSkuProperties Sku{ get; set; }
@@ -122,7 +121,6 @@ namespace Microsoft.Azure.Commands.Network
                 this.ResourceGroupName = GetResourceGroup(this.ResourceId);
                 this.Name = GetResourceName(this.ResourceId, "Microsoft.Network/networkVirtualAppliances");
             }
-            // Console.WriteLine(this.ResourceGroupName + " " + this.Name);
             var present = this.IsNetworkVirtualAppliancePresent(this.ResourceGroupName, this.Name);
             ConfirmAction(
                 Force.IsPresent,
@@ -150,7 +148,7 @@ namespace Microsoft.Azure.Commands.Network
             networkVirtualAppliance.VirtualHub = new PSResourceId();
             networkVirtualAppliance.VirtualHub.Id = this.VirtualHubId;
             networkVirtualAppliance.VirtualApplianceAsn = this.VirtualApplianceAsn;
-            networkVirtualAppliance.Sku = this.Sku;
+            networkVirtualAppliance.NvaSku = this.Sku;
             networkVirtualAppliance.Identity = this.Identity;
             networkVirtualAppliance.BootStrapConfigurationBlobs = this.BootStrapConfigurationBlob;
             networkVirtualAppliance.CloudInitConfigurationBlobs = this.CloudInitConfigurationBlob;

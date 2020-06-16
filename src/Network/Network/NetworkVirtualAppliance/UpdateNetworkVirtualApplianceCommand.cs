@@ -10,7 +10,7 @@ using System.Text;
 using MNM = Microsoft.Azure.Management.Network.Models;
 namespace Microsoft.Azure.Commands.Network
 {
-    [Cmdlet("Update", ResourceManager.Common.AzureRMConstants.AzureRMPrefix + "NetworkVirtualAppliance"), OutputType(typeof(PSNetworkVirtualAppliance))]
+    [Cmdlet("Update", ResourceManager.Common.AzureRMConstants.AzureRMPrefix + "NetworkVirtualAppliance", SupportsShouldProcess = true), OutputType(typeof(PSNetworkVirtualAppliance))]
     public class UpdateNetworkVirtualApplianceCommand : NetworkVirtualApplianceBaseCmdlet
     {
 
@@ -59,10 +59,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public override void Execute()
         {
-            Console.WriteLine("hi");
-            Console.WriteLine(this.VirtualApplianceAsn);
             base.Execute();
-            //Console.WriteLine(this.ResourceGroupName + " " + this.Name);
             if(!this.IsNetworkVirtualAppliancePresent(this.ResourceGroupName, this.Name))
             {
                 throw new ArgumentException(Properties.Resources.ResourceNotFound);
@@ -88,7 +85,7 @@ namespace Microsoft.Azure.Commands.Network
             {
                 networkVirtualAppliance.VirtualApplianceAsn = this.VirtualApplianceAsn;
             }
-            networkVirtualAppliance.Sku = this.Sku??networkVirtualAppliance.Sku;
+            networkVirtualAppliance.NvaSku = this.Sku??networkVirtualAppliance.NvaSku;
 
             var networkVirtualApplianceModel = NetworkResourceManagerProfile.Mapper.Map<MNM.NetworkVirtualAppliance>(networkVirtualAppliance);
 
