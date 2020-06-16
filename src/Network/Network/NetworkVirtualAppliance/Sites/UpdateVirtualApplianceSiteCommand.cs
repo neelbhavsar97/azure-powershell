@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Commands.Network
         public PSOffice365PolicyProperties O365Policy { get; set; }
 
         [Parameter(
-            Mandatory = false,
+            Mandatory = true,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "Network virtual appliance that this site is attached to.")]
         public string NetworkVirtualApplianceId { get; set; }
