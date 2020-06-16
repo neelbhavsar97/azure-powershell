@@ -38,17 +38,16 @@ namespace Microsoft.Azure.Commands.Network
 
         public PSNetworkVirtualApplianceSku GetVirtualApplianceSku(string name)
         {
-            var nvasku = this.VirtualApplianceSkusClient.Get(name);
-            var psSku = NetworkResourceManagerProfile.Mapper.Map<PSNetworkVirtualApplianceSku>(nvasku);
+            var nvaSku = this.VirtualApplianceSkusClient.Get(name);
+            var psSku = NetworkResourceManagerProfile.Mapper.Map<PSNetworkVirtualApplianceSku>(nvaSku);
             return psSku;
         }
 
-        public PSNetworkVirtualApplianceSku ToPsNetworkVirtualApplianceSku(NetworkVirtualApplianceSku nvasku)
+        public PSNetworkVirtualApplianceSku ToPsNetworkVirtualApplianceSku(NetworkVirtualApplianceSku nvaSku)
         {
-            var psSku = NetworkResourceManagerProfile.Mapper.Map<PSNetworkVirtualApplianceSku>(nvasku);
-            psSku.Tag = TagsConversionHelper.CreateTagHashtable(nvasku.Tags);
+            var psSku = NetworkResourceManagerProfile.Mapper.Map<PSNetworkVirtualApplianceSku>(nvaSku);
+            psSku.Tag = TagsConversionHelper.CreateTagHashtable(nvaSku.Tags);
             return psSku;
         }
-
     }
 }

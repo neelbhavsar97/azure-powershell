@@ -10,7 +10,7 @@ using System.Text;
 using MNM = Microsoft.Azure.Management.Network.Models;
 namespace Microsoft.Azure.Commands.Network
 {
-    [Cmdlet("Update", ResourceManager.Common.AzureRMConstants.AzureRMPrefix + "NetworkVirtualAppliance"), OutputType(typeof(PSNetworkInterface))]
+    [Cmdlet("Update", ResourceManager.Common.AzureRMConstants.AzureRMPrefix + "NetworkVirtualAppliance"), OutputType(typeof(PSNetworkVirtualAppliance))]
     public class UpdateNetworkVirtualApplianceCommand : NetworkVirtualApplianceBaseCmdlet
     {
 
@@ -31,15 +31,15 @@ namespace Microsoft.Azure.Commands.Network
         public virtual string ResourceGroupName { get; set; }
 
         [Parameter(
-            Mandatory = true,
+            Mandatory = false,
             ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Sku of the Virtual Appliance.")]
+            HelpMessage = "The Sku of the Virtual Appliance.")]
         public PSVirtualApplianceSkuProperties Sku { get; set; }
 
         [Parameter(
-            Mandatory = true,
+            Mandatory = false,
             ValueFromPipelineByPropertyName = true,
-            HelpMessage = "ASN number of the Virtual Appliance.")]
+            HelpMessage = "The ASN number of the Virtual Appliance.")]
         [ValidateNotNullOrEmpty]
         public int VirtualApplianceAsn { get; set; }
 
@@ -57,11 +57,12 @@ namespace Microsoft.Azure.Commands.Network
         [Parameter(Mandatory = false, HelpMessage = "Run cmdlet in the background")]
         public SwitchParameter AsJob { get; set; }
 
-
         public override void Execute()
         {
+            Console.WriteLine("hi");
+            Console.WriteLine(this.VirtualApplianceAsn);
             base.Execute();
-            Console.WriteLine(this.ResourceGroupName + " " + this.Name);
+            //Console.WriteLine(this.ResourceGroupName + " " + this.Name);
             if(!this.IsNetworkVirtualAppliancePresent(this.ResourceGroupName, this.Name))
             {
                 throw new ArgumentException(Properties.Resources.ResourceNotFound);
@@ -82,9 +83,12 @@ namespace Microsoft.Azure.Commands.Network
         private PSNetworkVirtualAppliance UpdateNetworkVirtualAppliance()
         {
             var networkVirtualAppliance = this.GetNetworkVirtualAppliance(this.ResourceGroupName, this.Name);
-            networkVirtualAppliance.Name = this.Name;
-            networkVirtualAppliance.VirtualApplianceAsn = this.VirtualApplianceAsn;
-            networkVirtualAppliance.Sku = this.Sku;
+            Console.WriteLine(this.VirtualApplianceAsn);
+            if (this.VirtualApplianceAsn != 0)
+            {
+                networkVirtualAppliance.VirtualApplianceAsn = this.VirtualApplianceAsn;
+            }
+            networkVirtualAppliance.Sku = this.Sku??networkVirtualAppliance.Sku;
 
             var networkVirtualApplianceModel = NetworkResourceManagerProfile.Mapper.Map<MNM.NetworkVirtualAppliance>(networkVirtualAppliance);
 

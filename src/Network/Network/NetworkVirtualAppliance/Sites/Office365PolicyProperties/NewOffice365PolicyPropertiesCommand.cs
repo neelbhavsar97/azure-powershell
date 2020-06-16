@@ -12,19 +12,19 @@ namespace Microsoft.Azure.Commands.Network
         [Parameter(
             Mandatory = false,
             ValueFromPipelineByPropertyName = false,
-            HelpMessage = "Optimize ")]
+            HelpMessage = "Breakout the allow category traffic.")]
         public SwitchParameter Allow { get; set; }
 
         [Parameter(
             Mandatory = false,
             ValueFromPipelineByPropertyName = false,
-            HelpMessage = "The bundled scale unit.")]
+            HelpMessage = "Breakout the optimize category traffic.")]
         public SwitchParameter Optimize { get; set; }
 
         [Parameter(
             Mandatory = false,
             ValueFromPipelineByPropertyName = false,
-            HelpMessage = "The market place version.")]
+            HelpMessage = "Breakout the default category traffic.")]
         public SwitchParameter Default { get; set; }
 
         public override void Execute()

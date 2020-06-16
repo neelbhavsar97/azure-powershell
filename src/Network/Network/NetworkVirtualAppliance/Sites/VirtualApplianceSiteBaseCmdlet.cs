@@ -1,11 +1,7 @@
 ﻿using Microsoft.Azure.Commands.Network.Models;
-using Microsoft.Azure.Commands.ResourceManager.Common.Tags;
 using Microsoft.Azure.Management.Network;
 using Microsoft.Azure.Management.Network.Models;
-using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
 
 namespace Microsoft.Azure.Commands.Network
 {
@@ -41,9 +37,9 @@ namespace Microsoft.Azure.Commands.Network
 
         public PSVirtualApplianceSite GetVirtualApplianceSite(string resourceGroupName, string nvaName, string name)
         {
-            var nvasite = this.VirtualApplianceSitesClient.Get(resourceGroupName, nvaName, name);
+            var nvaSite = this.VirtualApplianceSitesClient.Get(resourceGroupName, nvaName, name);
 
-            var psSite = NetworkResourceManagerProfile.Mapper.Map<PSVirtualApplianceSite>(nvasite);
+            var psSite = NetworkResourceManagerProfile.Mapper.Map<PSVirtualApplianceSite>(nvaSite);
             return psSite;
         }
         public PSVirtualApplianceSite ToPsVirtualApplianceSite(VirtualApplianceSite nvasite)

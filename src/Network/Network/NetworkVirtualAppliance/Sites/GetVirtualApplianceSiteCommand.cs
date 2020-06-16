@@ -62,10 +62,10 @@ namespace Microsoft.Azure.Commands.Network
             {
                 this.NvaName = GetResourceName(this.NetworkVirtualApplianceId, "Microsoft.Network/networkVirtualAppliances");
             }
-            Console.WriteLine(this.Name + " " + this.NvaName + " " + this.ResourceGroupName);
+            //Console.WriteLine(this.Name + " " + this.NvaName + " " + this.ResourceGroupName);
             if (ShouldGetByName(ResourceGroupName, NvaName, Name))
             {
-                Console.WriteLine("Get one.");
+                //Console.WriteLine("Get one.");
                 var site = this.GetVirtualApplianceSite(this.ResourceGroupName, this.NvaName, this.Name);
                 WriteObject(site);
             }
@@ -76,7 +76,7 @@ namespace Microsoft.Azure.Commands.Network
                 if(ShouldListByNva(ResourceGroupName, NvaName, Name))
                 {
                     Console.WriteLine("Get by nva");
-                    sitePage = this.VirtualApplianceSitesClient.List(ResourceGroupName, Name);
+                    sitePage = this.VirtualApplianceSitesClient.List(ResourceGroupName, NvaName);
                     // Get all resources by polling on next page link
                     var siteList = ListNextLink<VirtualApplianceSite>.GetAllResourcesByPollingNextLink(sitePage, this.VirtualApplianceSitesClient.ListNext);
 
@@ -92,14 +92,14 @@ namespace Microsoft.Azure.Commands.Network
                 if (ShouldListByResourceGroup(this.ResourceGroupName, this.NvaName))
                 {
                     Console.WriteLine("Get by rg");
-
                     // We do not support wildcards in NvaName, in this case the NvaName must be null or empty.
                     var nvaClient = this.NetworkClient.NetworkManagementClient.NetworkVirtualAppliances;
-                    var nvas = nvaClient.ListByResourceGroup(this.ResourceGroupName);
+                    var nvaPage = nvaClient.ListByResourceGroup(this.ResourceGroupName);
+                    var nvas = ListNextLink<NetworkVirtualAppliance>.GetAllResourcesByPollingNextLink(nvaPage, nvaClient.ListNext);
                     var psSites = new List<PSVirtualApplianceSite>();
                     foreach (var nva in nvas)
                     {
-                        sitePage = this.VirtualApplianceSitesClient.List(ResourceGroupName, Name);
+                        sitePage = this.VirtualApplianceSitesClient.List(ResourceGroupName, nva.Name);
                         // Get all resources by polling on next page link
                         var siteList = ListNextLink<VirtualApplianceSite>.GetAllResourcesByPollingNextLink(sitePage, this.VirtualApplianceSitesClient.ListNext);
                         foreach (var site in siteList)
@@ -115,11 +115,13 @@ namespace Microsoft.Azure.Commands.Network
                     Console.WriteLine("Get by sub");
 
                     var nvaClient = this.NetworkClient.NetworkManagementClient.NetworkVirtualAppliances;
-                    var nvas = nvaClient.List();
+                    var nvaPage = nvaClient.List();
+                    var nvas = ListNextLink<NetworkVirtualAppliance>.GetAllResourcesByPollingNextLink(nvaPage, nvaClient.ListNext);
                     var psSites = new List<PSVirtualApplianceSite>();
                     foreach (var nva in nvas)
                     {
-                        sitePage = this.VirtualApplianceSitesClient.List(ResourceGroupName, Name);
+                        var rg = GetResourceGroup(nva.Id);
+                        sitePage = this.VirtualApplianceSitesClient.List(rg, nva.Name);
                         // Get all resources by polling on next page link
                         var siteList = ListNextLink<VirtualApplianceSite>.GetAllResourcesByPollingNextLink(sitePage, this.VirtualApplianceSitesClient.ListNext);
                         foreach (var site in siteList)

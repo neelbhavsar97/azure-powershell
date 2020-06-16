@@ -22,7 +22,6 @@ namespace Microsoft.Azure.Commands.Network
             ValueFromPipelineByPropertyName = true,
             ParameterSetName = ResourceNameParameterSet,
             HelpMessage = "The resource name.")]
-        [ResourceNameCompleter("Microsoft.Network/virtualApplianceSite", "ResourceGroupName")]
         [ValidateNotNullOrEmpty]
         public virtual string Name { get; set; }
 
@@ -31,7 +30,6 @@ namespace Microsoft.Azure.Commands.Network
             ValueFromPipelineByPropertyName = true,
             ParameterSetName = ResourceNameParameterSet,
             HelpMessage = "The resource ID of the Network Virtual Appliance associated with this site.")]
-        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public virtual string NetworkVirtualApplianceId { get; set; }
 
@@ -49,7 +47,6 @@ namespace Microsoft.Azure.Commands.Network
             ValueFromPipelineByPropertyName = true,
             ParameterSetName = ResourceIdParameterSet,
             HelpMessage = "The resource id.")]
-        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public virtual string ResourceId { get; set; }
 
@@ -58,7 +55,6 @@ namespace Microsoft.Azure.Commands.Network
             ValueFromPipelineByPropertyName = true,
             ParameterSetName = ResourceObjectParameterSet,
             HelpMessage = "The virtual appliance site object.")]
-        [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public virtual PSVirtualApplianceSite VirtualApplianceSite { get; set; }
 
@@ -75,6 +71,7 @@ namespace Microsoft.Azure.Commands.Network
 
         public override void Execute()
         {
+            base.Execute();
             if (ParameterSetName.Equals(ResourceIdParameterSet))
             {
                 this.ResourceGroupName = GetResourceGroup(this.ResourceId);
@@ -102,7 +99,6 @@ namespace Microsoft.Azure.Commands.Network
                 }
             }
             
-            base.Execute();
             ConfirmAction(
                 Force.IsPresent,
                 string.Format(Properties.Resources.RemovingResource, Name),

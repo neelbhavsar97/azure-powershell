@@ -9,6 +9,7 @@ using System.Text;
 using MNM = Microsoft.Azure.Management.Network.Models;
 namespace Microsoft.Azure.Commands.Network
 {
+    [Cmdlet("Update", ResourceManager.Common.AzureRMConstants.AzureRMPrefix + "VirtualApplianceSite"), OutputType(typeof(PSVirtualApplianceSite))]
     public class UpdateVirtualApplianceSiteCommand : VirtualApplianceSiteBaseCmdlet
     {
         private const string ResourceNameParameterSet = "ResourceNameParameterSet";
@@ -34,21 +35,21 @@ namespace Microsoft.Azure.Commands.Network
         public virtual string ResourceGroupName { get; set; }
 
         [Parameter(
-            Mandatory = true,
+            Mandatory = false,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "The address prefix for the site.")]
         [ValidateNotNullOrEmpty]
         public string AddresssPrefix { get; set; }
 
         [Parameter(
-            Mandatory = true,
+            Mandatory = false,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "Office 365 breakout policy.")]
         [ValidateNotNullOrEmpty]
         public PSOffice365PolicyProperties O365Policy { get; set; }
 
         [Parameter(
-            Mandatory = true,
+            Mandatory = false,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "Network virtual appliance that this site is attached to.")]
         public string NetworkVirtualApplianceId { get; set; }
@@ -98,15 +99,14 @@ namespace Microsoft.Azure.Commands.Network
         private PSVirtualApplianceSite UpdateVirtualApplianceSite()
         {
             var psSite = this.GetVirtualApplianceSite(this.ResourceGroupName, this.NvaName, this.Name);
-            psSite.Name = this.Name;
-            psSite.O365Policy = this.O365Policy;
-            psSite.AddressPrefix = this.AddresssPrefix;
+            psSite.O365Policy = this.O365Policy??psSite.O365Policy;
+            psSite.AddressPrefix = this.AddresssPrefix??psSite.AddressPrefix;
 
             var siteModel = NetworkResourceManagerProfile.Mapper.Map<MNM.VirtualApplianceSite>(psSite);
             this.VirtualApplianceSitesClient.CreateOrUpdate(this.ResourceGroupName, this.NvaName, this.Name, siteModel);
 
-            var getNetworkVirtualAppliance = this.GetVirtualApplianceSite(this.ResourceGroupName, this.NvaName, this.Name);
-            return getNetworkVirtualAppliance;
+            var nvaSite = this.GetVirtualApplianceSite(this.ResourceGroupName, this.NvaName, this.Name);
+            return nvaSite;
         }
     }
 }

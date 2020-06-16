@@ -40,7 +40,7 @@ namespace Microsoft.Azure.Commands.Network
             Mandatory = true,
             ValueFromPipelineByPropertyName = true,
             ParameterSetName = ResourceIdParameterSet,
-            HelpMessage = "The resource group name.")]
+            HelpMessage = "The resource Id.")]
         [ResourceGroupCompleter]
         [ValidateNotNullOrEmpty]
         public virtual string ResourceId { get; set; }
@@ -55,48 +55,48 @@ namespace Microsoft.Azure.Commands.Network
         [Parameter(
             Mandatory = true,
             ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Resource ID of the Virtual Hub.")]
+            HelpMessage = "The Resource Id of the Virtual Hub.")]
         [ValidateNotNullOrEmpty]
         public string VirtualHubId { get; set; }
 
         [Parameter(
-            Mandatory = true,
+            Mandatory = false, // Make it true.
             ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Sku of the Virtual Appliance.")]
+            HelpMessage = "The Sku of the Virtual Appliance.")]
         public PSVirtualApplianceSkuProperties Sku{ get; set; }
 
         [Parameter(
             Mandatory = true,
             ValueFromPipelineByPropertyName = true,
-            HelpMessage = "ASN number of the Virtual Appliance.")]
+            HelpMessage = "The ASN number of the Virtual Appliance.")]
         [ValidateNotNullOrEmpty]
         public int VirtualApplianceAsn { get; set; }
 
         [Parameter(
             Mandatory = false,
             ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Managed identity.")]
+            HelpMessage = "The Managed identity.")]
         [ValidateNotNullOrEmpty]
         public PSManagedServiceIdentity Identity { get; set; }
 
         [Parameter(
             Mandatory = false,
             ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Bootstrap configuration blob storage URL.")]
+            HelpMessage = "The Bootstrap configuration blob URL.")]
         [ValidateNotNullOrEmpty]
         public string[] BootStrapConfigurationBlob { get; set; }
 
         [Parameter(
             Mandatory = false,
             ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Cloudinit configuration blob storage URL.")]
+            HelpMessage = "The Cloudinit configuration blob storage URL.")]
         [ValidateNotNullOrEmpty]
         public string[] CloudInitConfigurationBlob { get; set; }
 
         [Parameter(
             Mandatory = false,
             ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Cloudinit configuration in plain text.")]
+            HelpMessage = "The Cloudinit configuration as plain text.")]
         [ValidateNotNullOrEmpty]
         public string CloudInitConfiguration { get; set; }
 
@@ -114,7 +114,6 @@ namespace Microsoft.Azure.Commands.Network
         [Parameter(Mandatory = false, HelpMessage = "Run cmdlet in the background")]
         public SwitchParameter AsJob { get; set; }
 
-
         public override void Execute()
         {
             base.Execute();
@@ -123,7 +122,7 @@ namespace Microsoft.Azure.Commands.Network
                 this.ResourceGroupName = GetResourceGroup(this.ResourceId);
                 this.Name = GetResourceName(this.ResourceId, "Microsoft.Network/networkVirtualAppliances");
             }
-            Console.WriteLine(this.ResourceGroupName + " " + this.Name);
+            // Console.WriteLine(this.ResourceGroupName + " " + this.Name);
             var present = this.IsNetworkVirtualAppliancePresent(this.ResourceGroupName, this.Name);
             ConfirmAction(
                 Force.IsPresent,

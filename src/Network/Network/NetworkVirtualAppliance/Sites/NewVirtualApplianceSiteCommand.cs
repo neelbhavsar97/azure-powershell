@@ -3,9 +3,7 @@ using Microsoft.Azure.Commands.ResourceManager.Common.ArgumentCompleters;
 using Microsoft.Azure.Management.Network;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Management.Automation;
-using System.Text;
 using MNM = Microsoft.Azure.Management.Network.Models;
 namespace Microsoft.Azure.Commands.Network
 {
@@ -54,14 +52,14 @@ namespace Microsoft.Azure.Commands.Network
         [Parameter(
             Mandatory = true,
             ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Office 365 breakout policy.")]
+            HelpMessage = "The Office 365 breakout policy.")]
         [ValidateNotNullOrEmpty]
         public PSOffice365PolicyProperties O365Policy { get; set; }
 
         [Parameter(
             Mandatory = true,
             ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Network virtual appliance that this site is attached to.")]
+            HelpMessage = "The Network virtual appliance that this site is attached to.")]
         public string NetworkVirtualApplianceId { get; set; }
 
         [Parameter(
@@ -102,7 +100,7 @@ namespace Microsoft.Azure.Commands.Network
                     throw new Exception("The resource group for Network Virtual Appliance is not same as that of site.");
                 }
             }
-            Console.WriteLine(this.ResourceGroupName + " " + this.Name);
+            //Console.WriteLine(this.ResourceGroupName + " " + this.Name);
             var present = this.IsVirtualApplianceSitePresent(this.ResourceGroupName, this.NvaName, this.Name);
             ConfirmAction(
                 Force.IsPresent,
@@ -133,8 +131,8 @@ namespace Microsoft.Azure.Commands.Network
 
             this.VirtualApplianceSitesClient.CreateOrUpdate(this.ResourceGroupName, this.NvaName, this.Name, siteModel);
 
-            var getNetworkVirtualAppliance = this.GetVirtualApplianceSite(this.ResourceGroupName, this.NvaName, this.Name);
-            return getNetworkVirtualAppliance;
+            var getSite = this.GetVirtualApplianceSite(this.ResourceGroupName, this.NvaName, this.Name);
+            return getSite;
         }
     }
 }

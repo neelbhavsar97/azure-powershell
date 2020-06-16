@@ -14,7 +14,7 @@ namespace Microsoft.Azure.Commands.Network
         [Parameter(
             Mandatory = true,
             ValueFromPipelineByPropertyName = false,
-            HelpMessage = "The name of the Vendor.")]
+            HelpMessage = "The name of the vendor.")]
         public virtual string VendorName { get; set; }
 
         [Parameter(

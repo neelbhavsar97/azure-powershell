@@ -15,18 +15,18 @@ namespace Microsoft.Azure.Commands.Network
         [Parameter(
             Mandatory = false,
             ValueFromPipelineByPropertyName = true,
-            HelpMessage = "The resource name.",
+            HelpMessage = "The Sku name.",
             ParameterSetName = "ResourceName")]
         public virtual string SkuName  { get; set; }
 
         public override void Execute()
         {
+            // Does not support wild cards.
             base.Execute();
-            // Can the below be replaced by something better?. Such as ShouldGetByName (Although this does not work here).
             if (!(String.IsNullOrEmpty(SkuName)))
             {
                 // Get one NVA Sku.
-                //Console.WriteLine("Get one.");
+                // Console.WriteLine("Get one.");
                 var sku = this.GetVirtualApplianceSku(this.SkuName);
                 WriteObject(sku);
             }
@@ -49,4 +49,3 @@ namespace Microsoft.Azure.Commands.Network
         }
     }
 }
-

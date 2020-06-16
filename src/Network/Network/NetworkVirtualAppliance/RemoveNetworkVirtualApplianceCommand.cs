@@ -21,7 +21,6 @@ namespace Microsoft.Azure.Commands.Network
             ValueFromPipelineByPropertyName = true,
             ParameterSetName = ResourceNameParameterSet,
             HelpMessage = "The resource name.")]
-        [ResourceNameCompleter("Microsoft.Network/networkVirtualAppliance", "ResourceGroupName")]
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
@@ -38,8 +37,7 @@ namespace Microsoft.Azure.Commands.Network
            Mandatory = true,
            ValueFromPipelineByPropertyName = true,
            ParameterSetName = ResourceIdParameterSet,
-           HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter]
+           HelpMessage = "The Resource Id.")]
         [ValidateNotNullOrEmpty]
         public string ResourceId{ get; set; }
 
@@ -47,8 +45,7 @@ namespace Microsoft.Azure.Commands.Network
            Mandatory = true,
            ValueFromPipelineByPropertyName = true,
            ParameterSetName = ResourceObjectParameterSet,
-           HelpMessage = "The resource group name.")]
-        [ResourceGroupCompleter]
+           HelpMessage = "The resource object.")]
         [ValidateNotNullOrEmpty]
         public PSNetworkVirtualAppliance NetworkVirtualAppliance { get; set; }
 
@@ -77,7 +74,7 @@ namespace Microsoft.Azure.Commands.Network
                 this.ResourceGroupName = GetResourceGroup(ResourceId);
                 this.Name = GetResourceName(ResourceId, "Microsoft.Network/networkVirtualAppliances");
             }
-            Console.WriteLine(this.ResourceGroupName + " " + this.Name);
+            // Console.WriteLine(this.ResourceGroupName + " " + this.Name);
             ConfirmAction(
                 Force.IsPresent,
                 string.Format(Properties.Resources.RemovingResource, Name),

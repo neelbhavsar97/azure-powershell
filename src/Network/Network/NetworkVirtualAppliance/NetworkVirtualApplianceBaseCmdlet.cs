@@ -40,17 +40,17 @@ namespace Microsoft.Azure.Commands.Network
         public PSNetworkVirtualAppliance GetNetworkVirtualAppliance(string resourceGroupName, string name, string expandResource = null)
         {
             var nva = this.NetworkVirtualAppliancesClient.Get(resourceGroupName, name, expandResource);
-            var psNetworkInterface = NetworkResourceManagerProfile.Mapper.Map<PSNetworkVirtualAppliance>(nva);
-            psNetworkInterface.ResourceGroupName = resourceGroupName;
-            psNetworkInterface.Tag =
+            var psNva= NetworkResourceManagerProfile.Mapper.Map<PSNetworkVirtualAppliance>(nva);
+            psNva.ResourceGroupName = resourceGroupName;
+            psNva.Tag =
                 TagsConversionHelper.CreateTagHashtable(nva.Tags);
-            return psNetworkInterface;
+            return psNva;
         }
         public PSNetworkVirtualAppliance ToPsNetworkVirtualAppliance(NetworkVirtualAppliance nva)
         {
-            var psNVA = NetworkResourceManagerProfile.Mapper.Map<PSNetworkVirtualAppliance>(nva);
-            psNVA.Tag = TagsConversionHelper.CreateTagHashtable(nva.Tags);
-            return psNVA;
+            var psNva = NetworkResourceManagerProfile.Mapper.Map<PSNetworkVirtualAppliance>(nva);
+            psNva.Tag = TagsConversionHelper.CreateTagHashtable(nva.Tags);
+            return psNva;
         }
     }
 }
