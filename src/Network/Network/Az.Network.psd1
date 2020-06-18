@@ -490,7 +490,18 @@ CmdletsToExport = 'Add-AzApplicationGatewayAuthenticationCertificate',
                'Set-AzIpAllocation', 'New-AzSecurityPartnerProvider', 
                'Remove-AzSecurityPartnerProvider', 'Get-AzSecurityPartnerProvider', 
                'Set-AzSecurityPartnerProvider',
-               'Reset-AzHubRouter'
+               'Reset-AzHubRouter',
+               'Get-AzNetworkVirtualAppliance', 
+               'New-AzNetworkVirtualAppliance', 
+               'Remove-AzNetworkVirtualAppliance', 
+               'Update-AzNetworkVirtualAppliance', 
+               'Get-AzVirtualApplianceSite',    
+               'New-AzVirtualApplianceSite',
+               'Remove-AzVirtualApplianceSite',
+               'Update-AzVirtualApplianceSite',
+               'New-AzOffice365PolicyProperties',
+               'Get-AzNetworkVirtualApplianceSku',
+               'New-AzVirtualApplianceSkuProperties'
 
 # Variables to export from this module
 # VariablesToExport = @()

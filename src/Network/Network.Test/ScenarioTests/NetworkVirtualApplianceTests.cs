@@ -18,9 +18,9 @@ using Xunit;
 
 namespace Commands.Network.Test.ScenarioTests
 {
-    public class ExpressRoutePortTests : NetworkTestRunner
+    public class NetworkVirtualApplianceTests : NetworkTestRunner
     {
-        public ExpressRoutePortTests(Xunit.Abstractions.ITestOutputHelper output)
+        public NetworkVirtualApplianceTests(Xunit.Abstractions.ITestOutputHelper output)
             : base(output)
         {
         }
@@ -28,17 +28,17 @@ namespace Commands.Network.Test.ScenarioTests
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.Owner, NrpTeamAlias.pgtm)]
-        public void TestExpressRoutePortCRUDMinimalParameters()
+        public void TestNetworkVirtualApplianceCRUD()
         {
-            TestRunner.RunTestScript(string.Format("Test-ExpressRoutePortCRUD"));
+            TestRunner.RunTestScript(string.Format("Test-NetworkVirtualApplianceCRUD"));
         }
 
-        [Fact(Skip = "No bandwidth available")]
+        [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.Owner, NrpTeamAlias.pgtm)]
-        public void TestExpressRoutePortIdentityCRUD()
+        public void TestVirtualApplianceSiteCRUD()
         {
-            TestRunner.RunTestScript("Test-ExpressRoutePortIdentityCRUD");
+            TestRunner.RunTestScript("Test-VirtualApplianceSiteCRUD");
         }
     }
 }

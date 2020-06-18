@@ -74,7 +74,6 @@ namespace Microsoft.Azure.Commands.Network
                 this.ResourceGroupName = GetResourceGroup(ResourceId);
                 this.Name = GetResourceName(ResourceId, "Microsoft.Network/networkVirtualAppliances");
             }
-            // Console.WriteLine(this.ResourceGroupName + " " + this.Name);
             ConfirmAction(
                 Force.IsPresent,
                 string.Format(Properties.Resources.RemovingResource, Name),

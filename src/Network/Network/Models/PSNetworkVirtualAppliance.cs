@@ -32,11 +32,11 @@ namespace Microsoft.Azure.Commands.Network.Models
         
         public long? VirtualApplianceAsn { get; set; }
         
-        public IList<PSVirtualApplianceNicProperties> VirtualApplianceNics { get; }
+        public IList<PSVirtualApplianceNicProperties> VirtualApplianceNics { get; set; }
         
-        public IList<PSResourceId> VirtualApplianceSites { get; }
+        public IList<PSResourceId> VirtualApplianceSites { get; set; }
         
-        public string ProvisioningState { get; }
+        public string ProvisioningState { get; set; }
         
         public PSManagedServiceIdentity Identity { get; set; }
         

@@ -79,7 +79,6 @@ namespace Microsoft.Azure.Commands.Network
             {
                 throw new Exception("The resource group for Network Virtual Appliance is not same as that of site.");
             }
-            Console.WriteLine(this.ResourceGroupName + " " + this.Name);
             if(!(this.IsVirtualApplianceSitePresent(this.ResourceGroupName, this.NvaName, this.Name)))
             {
                 throw new ArgumentException(Properties.Resources.ResourceNotFound);

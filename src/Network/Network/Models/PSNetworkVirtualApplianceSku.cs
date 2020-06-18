@@ -5,10 +5,10 @@ using System.Text;
 
 namespace Microsoft.Azure.Commands.Network.Models
 {
-    public class PSNetworkVirtualApplianceSku : PSTopLevelResource
+    public class PSNetworkVirtualApplianceSku : PSChildResource
     {
-        public string Vendor { get; }
-        public IList<string> AvailableVersions { get; }
+        public string Vendor { get; set; }
+        public IList<string> AvailableVersions { get; set; }
         public IList<PSNetworkVirtualApplianceSkuInstances> AvailableScaleUnits { get; set; }
     }
 }

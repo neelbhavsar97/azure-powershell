@@ -80,7 +80,6 @@ namespace Microsoft.Azure.Commands.Network
         private PSNetworkVirtualAppliance UpdateNetworkVirtualAppliance()
         {
             var networkVirtualAppliance = this.GetNetworkVirtualAppliance(this.ResourceGroupName, this.Name);
-            Console.WriteLine(this.VirtualApplianceAsn);
             if (this.VirtualApplianceAsn != 0)
             {
                 networkVirtualAppliance.VirtualApplianceAsn = this.VirtualApplianceAsn;

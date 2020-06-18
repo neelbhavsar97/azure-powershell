@@ -6,8 +6,8 @@ namespace Microsoft.Azure.Commands.Network.Models
 {
     public class PSVirtualApplianceNicProperties
     {
-        public string Name { get; }
-        public string PublicIpAddress { get; }
-        public string PrivateIpAddress { get; }
+        public string Name { get; set; }
+        public string PublicIpAddress { get; set; }
+        public string PrivateIpAddress { get; set; }
     }
 }

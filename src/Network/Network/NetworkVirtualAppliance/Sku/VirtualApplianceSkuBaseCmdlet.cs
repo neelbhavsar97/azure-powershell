@@ -46,7 +46,6 @@ namespace Microsoft.Azure.Commands.Network
         public PSNetworkVirtualApplianceSku ToPsNetworkVirtualApplianceSku(NetworkVirtualApplianceSku nvaSku)
         {
             var psSku = NetworkResourceManagerProfile.Mapper.Map<PSNetworkVirtualApplianceSku>(nvaSku);
-            psSku.Tag = TagsConversionHelper.CreateTagHashtable(nvaSku.Tags);
             return psSku;
         }
     }

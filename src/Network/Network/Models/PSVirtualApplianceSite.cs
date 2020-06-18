@@ -9,6 +9,6 @@ namespace Microsoft.Azure.Commands.Network.Models
     {
         public string AddressPrefix { get; set; }
         public PSOffice365PolicyProperties O365Policy { get; set; }
-        public string ProvisioningState { get; }
+        public string ProvisioningState { get; set; }
     }
 }

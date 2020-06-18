@@ -6,7 +6,7 @@ namespace Microsoft.Azure.Commands.Network.Models
 {
     public class PSNetworkVirtualApplianceSkuInstances
     {
-        public string ScaleUnit { get; }
-        public int? InstanceCount { get; }
+        public string ScaleUnit { get; set; }
+        public int? InstanceCount { get; set; }
     }
 }
