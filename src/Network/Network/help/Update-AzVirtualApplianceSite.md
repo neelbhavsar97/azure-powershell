@@ -13,9 +13,9 @@ Change or Modify a Virtual Appliance site connected to a Network Virtual Applian
 ## SYNTAX
 
 ```
-Update-AzVirtualApplianceSite -Name <String> -ResourceGroupName <String> [-AddresssPrefix <String>]
- [-O365Policy <PSOffice365PolicyProperties>] [-NetworkVirtualApplianceId <String>] [-Tag <Hashtable>] [-Force]
- [-AsJob] [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Update-AzVirtualApplianceSite -Name <String> -ResourceGroupName <String> -NetworkVirtualApplianceId <String>
+ [-AddresssPrefix <String>] [-O365Policy <PSOffice365PolicyProperties>] [-Tag <Hashtable>] [-Force] [-AsJob]
+ [-DefaultProfile <IAzureContextContainer>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -116,7 +116,7 @@ Type: System.String
 Parameter Sets: (All)
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
