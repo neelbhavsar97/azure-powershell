@@ -33,7 +33,7 @@ namespace Commands.Network.Test.ScenarioTests
             TestRunner.RunTestScript(string.Format("Test-NetworkVirtualApplianceCRUD"));
         }
 
-        [Fact]
+        [Fact(Skip = "A bug is being fixed by Nfv-Rp team")]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.Owner, NrpTeamAlias.pgtm)]
         public void TestVirtualApplianceSiteCRUD()

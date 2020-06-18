@@ -6,8 +6,6 @@ using Microsoft.Rest.Azure;
 using System;
 using System.Collections.Generic;
 using System.Management.Automation;
-using System.Net.NetworkInformation;
-using System.Text;
 
 namespace Microsoft.Azure.Commands.Network
 {
@@ -61,19 +59,24 @@ namespace Microsoft.Azure.Commands.Network
             else
             {
                 this.NvaName = GetResourceName(this.NetworkVirtualApplianceId, "Microsoft.Network/networkVirtualAppliances");
+                string nvaRg = GetResourceGroup(NetworkVirtualApplianceId);
+                if (!nvaRg.Equals(this.ResourceGroupName))
+                {
+                    throw new Exception("The resource group for Network Virtual Appliance is not same as that of site.");
+                }
             }
-            if (ShouldGetByName(ResourceGroupName, NvaName, Name))
-            {
+            if (ShouldGetByName(this.ResourceGroupName, this.NvaName, this.Name))
+            { 
                 var site = this.GetVirtualApplianceSite(this.ResourceGroupName, this.NvaName, this.Name);
                 WriteObject(site);
             }
             else
             {
-
                 IPage<VirtualApplianceSite> sitePage;
-                if(ShouldListByNva(ResourceGroupName, NvaName, Name))
+
+                if(ShouldListByNva(this.ResourceGroupName, this.NvaName, this.Name))
                 {
-                    sitePage = this.VirtualApplianceSitesClient.List(ResourceGroupName, NvaName);
+                    sitePage = this.VirtualApplianceSitesClient.List(this.ResourceGroupName, this.NvaName);
                     // Get all resources by polling on next page link
                     var siteList = ListNextLink<VirtualApplianceSite>.GetAllResourcesByPollingNextLink(sitePage, this.VirtualApplianceSitesClient.ListNext);
 
@@ -84,18 +87,17 @@ namespace Microsoft.Azure.Commands.Network
                         var psSite = this.ToPsVirtualApplianceSite(site);
                         psSites.Add(psSite);
                     }
-                    WriteObject(psSites, true);
+                    WriteObject(TopLevelWildcardFilter(this.ResourceGroupName, this.Name, psSites), true);
                 }
                 if (ShouldListByResourceGroup(this.ResourceGroupName, this.NvaName))
                 {
-                    // We do not support wildcards in NvaName, in this case the NvaName must be null or empty.
                     var nvaClient = this.NetworkClient.NetworkManagementClient.NetworkVirtualAppliances;
                     var nvaPage = nvaClient.ListByResourceGroup(this.ResourceGroupName);
                     var nvas = ListNextLink<NetworkVirtualAppliance>.GetAllResourcesByPollingNextLink(nvaPage, nvaClient.ListNext);
                     var psSites = new List<PSVirtualApplianceSite>();
                     foreach (var nva in nvas)
                     {
-                        sitePage = this.VirtualApplianceSitesClient.List(ResourceGroupName, nva.Name);
+                        sitePage = this.VirtualApplianceSitesClient.List(this.ResourceGroupName, nva.Name);
                         // Get all resources by polling on next page link
                         var siteList = ListNextLink<VirtualApplianceSite>.GetAllResourcesByPollingNextLink(sitePage, this.VirtualApplianceSitesClient.ListNext);
                         foreach (var site in siteList)
@@ -104,7 +106,7 @@ namespace Microsoft.Azure.Commands.Network
                             psSites.Add(psSite);
                         }
                     }
-                    WriteObject(psSites, true);
+                    WriteObject(TopLevelWildcardFilter(this.ResourceGroupName, this.Name, psSites), true);
                 }
                 else if(ShouldListBySubscription(this.ResourceGroupName, this.NvaName))
                 {
@@ -124,7 +126,7 @@ namespace Microsoft.Azure.Commands.Network
                             psSites.Add(psSite);
                         }
                     }
-                    WriteObject(psSites, true);
+                    WriteObject(TopLevelWildcardFilter(this.ResourceGroupName, this.Name, psSites), true);
                 }
             }
         }

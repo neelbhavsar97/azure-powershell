@@ -35,6 +35,13 @@ namespace Microsoft.Azure.Commands.Network
         public virtual string ResourceGroupName { get; set; }
 
         [Parameter(
+            Mandatory = true,
+            ValueFromPipelineByPropertyName = true,
+            HelpMessage = "Network virtual appliance that this site is attached to.")]
+        [ValidateNotNullOrEmpty]
+        public string NetworkVirtualApplianceId { get; set; }
+
+        [Parameter(
             Mandatory = false,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "The address prefix for the site.")]
@@ -47,12 +54,6 @@ namespace Microsoft.Azure.Commands.Network
             HelpMessage = "Office 365 breakout policy.")]
         [ValidateNotNullOrEmpty]
         public PSOffice365PolicyProperties O365Policy { get; set; }
-
-        [Parameter(
-            Mandatory = false,
-            ValueFromPipelineByPropertyName = true,
-            HelpMessage = "Network virtual appliance that this site is attached to.")]
-        public string NetworkVirtualApplianceId { get; set; }
 
         [Parameter(
             Mandatory = false,
@@ -73,7 +74,7 @@ namespace Microsoft.Azure.Commands.Network
         {
             base.Execute();
             
-            NvaName= GetResourceName(NetworkVirtualApplianceId, "Microsoft.Network/networkVirtualAppliances");
+            this.NvaName = GetResourceName(NetworkVirtualApplianceId, "Microsoft.Network/networkVirtualAppliances");
             string nvaRg = GetResourceGroup(NetworkVirtualApplianceId);
             if (!nvaRg.Equals(this.ResourceGroupName))
             {

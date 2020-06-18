@@ -34,6 +34,7 @@ namespace Microsoft.Azure.Commands.Network
             Mandatory = false,
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "The Sku of the Virtual Appliance.")]
+        [ValidateNotNullOrEmpty]
         public PSVirtualApplianceSkuProperties Sku { get; set; }
 
         [Parameter(

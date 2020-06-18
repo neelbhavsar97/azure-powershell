@@ -101,7 +101,7 @@ namespace Microsoft.Azure.Commands.Network
                 Name,
                 () =>
                 {
-                    this.VirtualApplianceSitesClient.Delete(this.ResourceGroupName, NvaName, this.Name);
+                    this.VirtualApplianceSitesClient.Delete(this.ResourceGroupName, this.NvaName, this.Name);
                     if (PassThru)
                     {
                         WriteObject(true);

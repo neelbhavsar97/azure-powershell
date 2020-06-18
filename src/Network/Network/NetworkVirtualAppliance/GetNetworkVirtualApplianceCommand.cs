@@ -23,6 +23,7 @@ namespace Microsoft.Azure.Commands.Network
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "The resource name.",
             ParameterSetName = ResourceNameParameterSet)]
+        [ValidateNotNullOrEmpty]
         public virtual string Name { get; set; }
 
         [Parameter(
@@ -31,6 +32,7 @@ namespace Microsoft.Azure.Commands.Network
             HelpMessage = "The resource group name.",
             ParameterSetName = ResourceNameParameterSet)]
         [ResourceGroupCompleter]
+        [ValidateNotNullOrEmpty]
         public virtual string ResourceGroupName { get; set; }
 
         [Parameter(
@@ -38,6 +40,7 @@ namespace Microsoft.Azure.Commands.Network
             ValueFromPipelineByPropertyName = true,
             HelpMessage = "The resource Id.",
             ParameterSetName = ResourceIdParameterSet)]
+        [ValidateNotNullOrEmpty]
         public virtual string ResourceId { get; set; }
 
         public override void Execute()
@@ -49,7 +52,7 @@ namespace Microsoft.Azure.Commands.Network
                 this.Name = GetResourceName(this.ResourceId, "Microsoft.Network/networkVirtualAppliances");
             }
             
-            if (ShouldGetByName(ResourceGroupName, Name))
+            if (ShouldGetByName(this.ResourceGroupName, this.Name))
             {
                 var nva = this.GetNetworkVirtualAppliance(this.ResourceGroupName, this.Name);
                 WriteObject(nva);
@@ -57,9 +60,9 @@ namespace Microsoft.Azure.Commands.Network
             else
             {
                 IPage<NetworkVirtualAppliance> nvaPage;
-                if (ShouldListByResourceGroup(ResourceGroupName, Name))
+                if (ShouldListByResourceGroup(this.ResourceGroupName, this.Name))
                 {
-                    nvaPage = this.NetworkVirtualAppliancesClient.ListByResourceGroup(ResourceGroupName);
+                    nvaPage = this.NetworkVirtualAppliancesClient.ListByResourceGroup(this.ResourceGroupName);
                 }
                 else
                 {
@@ -78,7 +81,7 @@ namespace Microsoft.Azure.Commands.Network
                     psNvas.Add(psNva);
                 }
 
-                WriteObject(TopLevelWildcardFilter(ResourceGroupName, Name, psNvas), true);
+                WriteObject(TopLevelWildcardFilter(this.ResourceGroupName, this.Name, psNvas), true);
             }
         }
     }

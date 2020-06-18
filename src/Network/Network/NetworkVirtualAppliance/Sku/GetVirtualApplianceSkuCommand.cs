@@ -5,7 +5,7 @@ using Microsoft.Rest.Azure;
 using System;
 using System.Collections.Generic;
 using System.Management.Automation;
-using System.Text;
+using System.Linq;
 
 namespace Microsoft.Azure.Commands.Network
 {
@@ -14,16 +14,16 @@ namespace Microsoft.Azure.Commands.Network
     {
         [Parameter(
             Mandatory = false,
-            ValueFromPipelineByPropertyName = true,
+            ValueFromPipelineByPropertyName = false,
             HelpMessage = "The Sku name.",
             ParameterSetName = "ResourceName")]
+        [ValidateNotNullOrEmpty]
         public virtual string SkuName  { get; set; }
 
         public override void Execute()
         {
-            // Does not support wild cards.
             base.Execute();
-            if (!(String.IsNullOrEmpty(SkuName)))
+            if (ShouldGetByName(this.SkuName))
             {
                 var sku = this.GetVirtualApplianceSku(this.SkuName);
                 WriteObject(sku);
@@ -40,8 +40,24 @@ namespace Microsoft.Azure.Commands.Network
                     var psSku = this.ToPsNetworkVirtualApplianceSku(sku);
                     psSkus.Add(psSku);
                 }
-                WriteObject(psSkus, true);
+                WriteObject(Filter(this.SkuName, psSkus), true);
             }
+        }
+
+        private bool ShouldGetByName(string name)
+        {
+            return !string.IsNullOrEmpty(name) && !WildcardPattern.ContainsWildcardCharacters(name);
+        }
+
+        private List<PSNetworkVirtualApplianceSku> Filter(string skuname, List<PSNetworkVirtualApplianceSku> resources)
+        {
+            if (!string.IsNullOrEmpty(skuname))
+            {
+                WildcardPattern pattern = new WildcardPattern(skuname, WildcardOptions.IgnoreCase);
+                var tmp = resources.Where(p => pattern.IsMatch(p.Vendor)).ToList();
+                return tmp;
+            }
+            return resources;
         }
     }
 }

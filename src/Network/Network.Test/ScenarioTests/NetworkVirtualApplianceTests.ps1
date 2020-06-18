@@ -52,13 +52,15 @@ function Test-NetworkVirtualApplianceCRUD
         $wan = New-AzVirtualWan -ResourceGroupName $rgname -Name $wanname -Location $location
         $hub = New-AzVirtualHub -ResourceGroupName $rgname -Name $hubname -Location $location -VirtualWan $wan -AddressPrefix $prefix
         $nva = New-AzNetworkVirtualAppliance -ResourceGroupName $rgname -Name $nvaname -Location $location -VirtualApplianceAsn $asn -VirtualHubId $hub.Id -Sku $sku -CloudInitConfiguration "echo hi" 
+        Assert-NotNull $nva
+        
         $getnva = Get-AzNetworkVirtualAppliance -ResourceGroupName $rgname -Name $nvaname
-
         Assert-NotNull $getnva
         
-        ## There is a bug in the update call in the nfvrp. So Skipping this tests.
-        #$updatednva = Update-AzNetworkVirtualAppliance -ResourceGroupName $rgname -Name $nvaname -VirtualApplianceAsn $newasn -Force
-        
+        ## There is a bug in the update call in the nfvrp. The NfvRp team will record the powershell tests once fixed.
+        # $updatednva = Update-AzNetworkVirtualAppliance -ResourceGroupName $rgname -Name $nvaname -VirtualApplianceAsn $newasn -Force
+        # Assert-True { $updatednva.VirtualApplianceAsn -eq $newasn}
+
         $rmresult = Remove-AzNetworkVirtualAppliance -ResourceGroupName $rgname -Name $nvaname -Force -PassThru
         Assert-True { $true }
    	}   
@@ -87,7 +89,6 @@ function Test-VirtualApplianceSiteCRUD
     $scaleunit = 1
     $version = 'latest'    
     $asn = 1270
-    $newasn = 1271
     $prefix = "10.0.0.0/16"
     $siteprefix = "10.0.1.0/24"
     $newsiteprefix = "10.0.2.0/24"
@@ -104,9 +105,8 @@ function Test-VirtualApplianceSiteCRUD
         $o365Policy = New-AzOffice365PolicyProperties -Allow -Optimize
         $site = New-AzVirtualApplianceSite -Name $sitename -ResourceGroupName $rgname -AddressPrefix $siteprefix -O365Policy $o365Policy -NetworkVirtualApplianceId $getnva.Id
         $getsite = Get-AzVirtualApplianceSite -Name $sitename -ResourceGroupName $rgname -NetworkVirtualApplianceId $getnva.Id
-
-        $newsite = Update-AzVirtualApplianceSite -Name $sitename -ResourceGroupName $rgname -NetworkVirtualApplianceId $getnva.Id -AddressPrefix $newsiteprefix -Force
-        Remove-AzVirtualApplianceSite -Name $sitename -ResourceGroupName $rgname -NetworkVirtualApplianceId $getnva.Id
+        $setsite = Update-AzVirtualApplianceSite -Name $sitename -ResourceGroupName $rgname -NetworkVirtualApplianceId $getnva.Id -AddressPrefix $newsiteprefix -Force
+        Remove-AzVirtualApplianceSite -Name $sitename -ResourceGroupName $rgname -NetworkVirtualApplianceId $getnva.Id -Force
         Remove-AzNetworkVirtualAppliance -ResourceGroupName $rgname -Name $nvaname -Force
    	}   
     finally{
