@@ -12,6 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
+
 namespace Microsoft.Azure.Commands.Network.Models
 {
     using Microsoft.Azure.Management.Internal.Network.Common;
