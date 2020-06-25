@@ -18,14 +18,12 @@ using Microsoft.Azure.Commands.Profile.Models;
 using Microsoft.Azure.Commands.Profile.Properties;
 using Microsoft.Azure.Commands.ResourceManager.Common;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Management.Automation;
-using System.Reflection;
 
 namespace Microsoft.Azure.Commands.Profile
 {
-    [Cmdlet("Get", ResourceManager.Common.AzureRMConstants.AzureRMPrefix + "Subscription", DefaultParameterSetName = ListByIdInTenantParameterSet),OutputType(typeof(PSAzureSubscription))]
+    [Cmdlet("Get", AzureRMConstants.AzureRMPrefix + "Subscription", DefaultParameterSetName = ListByIdInTenantParameterSet),OutputType(typeof(PSAzureSubscription))]
     public class GetAzureRMSubscriptionCommand : AzureRmLongRunningCmdlet
     {
         public const string ListByIdInTenantParameterSet = "ListByIdInTenant";

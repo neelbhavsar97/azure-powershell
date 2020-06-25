@@ -700,7 +700,7 @@ namespace Microsoft.Azure.Commands.Network
             return new ConnectionMonitorSuccessThreshold()
             {
                 ChecksFailedPercent = testConfiguration.SuccessThreshold.ChecksFailedPercent,
-                RoundTripTimeMs = testConfiguration.SuccessThreshold.RoundTripTimeMs
+                RoundTripTimeMs = (int?)testConfiguration.SuccessThreshold.RoundTripTimeMs
             };
         }
 
