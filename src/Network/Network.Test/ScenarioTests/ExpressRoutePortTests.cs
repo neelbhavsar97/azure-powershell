@@ -40,5 +40,14 @@ namespace Commands.Network.Test.ScenarioTests
         {
             TestRunner.RunTestScript("Test-ExpressRoutePortIdentityCRUD");
         }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        [Trait(Category.Owner, NrpTeamAlias.pgtm)]
+        public void TestExpressRoutePortGenerateLOA()
+        {
+            TestRunner.RunTestScript("Test-ExpressRoutePortGenerateLOA");
+        }
+
     }
 }

@@ -20,6 +20,8 @@ using System;
 using System.Management.Automation;
 using System.IO;
 using Microsoft.Azure.Management.Network.Models;
+using System.ComponentModel;
+using System.Security.Cryptography;
 
 namespace Microsoft.Azure.Commands.Network
 {
@@ -56,13 +58,14 @@ namespace Microsoft.Azure.Commands.Network
         [ValidateNotNullOrEmpty]
         public PSExpressRoutePort ExpressRoutePort { get; set; }
 
+        [Alias("ResourceId")]
         [Parameter(
             ParameterSetName = ResourceIdParameterSet,
             Mandatory = true,
             HelpMessage = "ResourceId of the express route port.",
             ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
-        public string ResourceId { get; set; }
+        public string Id { get; set; }
 
         [Alias("Name")]
         [Parameter(
@@ -95,18 +98,24 @@ namespace Microsoft.Azure.Commands.Network
             }
             if (string.Equals(this.ParameterSetName, ResourceIdParameterSet, StringComparison.OrdinalIgnoreCase))
             {
-                var resourceInfo = new ResourceIdentifier(ResourceId);
+                var resourceInfo = new ResourceIdentifier(Id);
                 ResourceGroupName = resourceInfo.ResourceGroupName;
                 PortName = resourceInfo.ResourceName;
             }
             GenerateExpressRoutePortsLOARequest generateExpressRoutePortsLOARequest = new GenerateExpressRoutePortsLOARequest(CustomerName);
             var response = this.NetworkClient.NetworkManagementClient.ExpressRoutePorts.GenerateLOA(this.ResourceGroupName, this.PortName, generateExpressRoutePortsLOARequest);
             var decodedDocument = Convert.FromBase64String(response.EncodedContent);
+            string pwd = Directory.GetCurrentDirectory();
             if (String.IsNullOrEmpty(Destination))
             {
                 Destination = DefaultFileName;
             }
+            if (!(Path.IsPathRooted(Destination)))
+            {
+                Destination = Directory.GetCurrentDirectory() + "\\" + Destination;
+            }
             File.WriteAllBytes(Destination, decodedDocument);
+            Console.WriteLine("Written Letter of Authorization To: " + Destination);
             if (PassThru)
             {
                 WriteObject(true);
