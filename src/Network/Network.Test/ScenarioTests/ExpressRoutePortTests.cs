@@ -41,7 +41,7 @@ namespace Commands.Network.Test.ScenarioTests
             TestRunner.RunTestScript("Test-ExpressRoutePortIdentityCRUD");
         }
 
-        [Fact]
+        [Fact(Skip = "Nfv-RP rollout incomplete")]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         [Trait(Category.Owner, NrpTeamAlias.pgtm)]
         public void TestExpressRoutePortGenerateLOA()
